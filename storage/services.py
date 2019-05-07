@@ -48,3 +48,9 @@ class Service:
         updated_containers = [containers for container in containers if container['uid'] != updated_container.uid]
 
         self._save_to_disk(updated_containers)
+
+    
+    def search(self, name_page):
+        container_list = self.list_containers('-n')
+        containers = [container for container in container_list if container['name_page'] == name_page]
+        return containers

@@ -94,4 +94,17 @@ def list(ctx, option):
     click.echo(tabulate(container_list, headers = 'keys', tablefmt='fancy_grid'))
 
 
+@storage.command()
+@click.argument('name_page', type = str)
+@click.pass_context
+def search(ctx, name_page):
+    """Search container for name page"""
+    storage_service = StorageService(ctx.obj['pages_table'])
+    containers = storage_service.search(name_page)
+    if containers:
+        click.echo(tabulate(containers, headers = 'keys', tablefmt='fancy_grid'))
+    else:
+        click.echo('Container not found...')
+
+
 all = storage

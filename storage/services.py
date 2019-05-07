@@ -2,7 +2,7 @@ import csv, os
 
 from storage.model import Container
 
-class Service:
+class StorageService:
     
     def __init__(self, table_name):
         self.table_name = table_name

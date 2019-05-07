@@ -13,13 +13,18 @@ class Service:
             writer = csv.DictWriter(f, fieldnames = Container.schema())
             writer.writerow(page.to_dict())
 
-    def list_containers(self):
+    def list_containers(self, option = '-n'):
         with open(self.table_name, mode = 'r') as f:
-            reader = csv.DictReader(f, fieldnames = Container.schema())
-            return list(reader)
+            all_read = csv.DictReader(f, fieldnames = Container.schema())
+            if option == '-a':
+                return list(all_read)
+            elif option == '-n':
+                reads = [all_read for read in all_read if read['deleted_at'] == None]
+                return list(reads)
+                    
 
     def update_container(self, updated_container):
-        containers = self.list_containers()
+        containers = self.list_containers('-a')
         
         updated_containers = []
 
@@ -43,7 +48,7 @@ class Service:
 
 
     def delete_container(self, container_uid):
-        containers = self.list_containers()
+        containers = self.list_containers('-a')
         
         updated_containers = [containers for container in containers if container['uid'] != container_uid]
 

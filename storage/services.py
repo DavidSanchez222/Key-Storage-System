@@ -1,4 +1,4 @@
-import csv, os
+import csv, os, click
 
 from storage.model import Container
 
@@ -19,8 +19,10 @@ class StorageService:
             if option == '-a':
                 return list(all_read)
             elif option == '-n':
-                reads = [all_read for read in all_read if read['deleted_at'] == None]
+                reads = [all_read for read in all_read if read['deleted_at'] == 0]
                 return list(reads)
+            else:
+                click.echo('Invalid option...')
                     
 
     def update_container(self, updated_container):

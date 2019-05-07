@@ -58,7 +58,7 @@ def _soft_delete_credentials_flow(container):
     return container
 
 
-@clients.command()
+@storage.command()
 @click.argument('container_uid', type = str)
 @click.pass_context
 def update(ctx, container_uid):

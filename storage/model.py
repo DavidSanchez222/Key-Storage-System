@@ -1,17 +1,19 @@
 import uuid
 
+from datetime import datetime
+
 
 class Container:
     
-    def __init__(self, name_page, address, user, password, created_at, updated_at, deleted_at, uid = None):
+    def __init__(self, name_page, address, user, password):
         self.name_page = name_page
         self.address = address
         self.user = user
         self.password = password
-        self.created_at = created_at
-        self.updated_at = updated_at
-        self.deleted_at = deleted_at
-        self.uid = uid or uuid.uuid4()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.deleted_at = None
+        self.uid = uuid.uuid4()
 
 
     def to_dict(self):

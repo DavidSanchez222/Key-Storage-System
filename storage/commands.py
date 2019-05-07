@@ -7,6 +7,7 @@ from datetime import datetime
 
 @click.group()
 def storage():
+    """Manages access credentials containers"""
     pass
 
 @storage.command()
@@ -32,11 +33,46 @@ def create(ctx, name_page, address, user, password):
     click.echo('Container created...')
 
 
-def delete():
-    pass
+@storage.command()
+@click.argument('option', type = str, default = '-s')
+@click.argument('container_uid', type = str)
+def delete(ctx, option, container_uid):
+    """Delete a container"""
+    storage_service = StorageService(ctx.obj['pages_table'])
+    container_list = storage_service.list_clients('-n')
+    container = [container for container in container_list if container['uid'] == container_uid]
+    if click.confirm(f'Are you sure you want to delete the container with uid: {container_uid}') and container:
+        if option == '-s':
+            container = _soft_delete_credentials_flow(Container(**container[0]))
+            storage_service.update_container(container)
+            click.echo('Container deleted...')
+        elif option == '-f':
+            storage_service.delete_container(container_uid)
+            click.echo('Container deleted...')
+    else:
+        click.echo('Container not found...')
 
-def update():
-    pass
+
+def _soft_delete_credentials_flow(container):
+    container.deleted_at = datetime.now()
+    return container
+
+
+@clients.command()
+@click.argument('container_uid', type = str)
+@click.pass_context
+def update(ctx, container_uid):
+    """Update a container"""
+    storage_service = StorageService(ctx.obj['clients_table'])
+    container_list = storage_service.list_clients('-n')
+    container = [container for container in container_list if container['uid'] == container_uid]
+    if container:
+        container = _update_credentials_flow(Container(**container[0]))
+        storage_service.update_container(container)
+        click.echo('Container updated...')
+    else:
+        click.echo('Container not found...')
+
 
 def _update_credentials_flow(container):
     click.echo('Leave empty if you don\'t want to modify the value?')

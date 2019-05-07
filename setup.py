@@ -7,6 +7,7 @@ setup(
     install_requires = [
         'Click',
         'Tabulate',
+        'Dotenv'
     ],
     entry_points = '''
         [console_scripts]

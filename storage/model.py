@@ -12,7 +12,7 @@ class Container:
         self.password = password
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-        self.deleted_at = None
+        self.deleted_at = 0
         self.uid = uuid.uuid4()
 
 

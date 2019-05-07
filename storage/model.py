@@ -1,7 +1,7 @@
 import uuid
 
 
-class Page:
+class Container:
     
     def __init__(self, name_page, address, user, password, created_at, updated_at, deleted_at, uid = None):
         self.name_page = name_page

@@ -8,7 +8,7 @@ class Service:
         self.table_name = table_name
 
     
-    def creating_container(self, page):
+    def create_container(self, page):
         with open(self.table_name, mode = 'a') as f:
             writer = csv.DictWriter(f, fieldnames = Container.schema())
             writer.writerow(page.to_dict())

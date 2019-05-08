@@ -27,7 +27,7 @@ def storage():
 @click.pass_context
 def create(ctx, name_page, address, user, password):
     """Create a new container of credentials."""
-    container = Container(name_page, address, user,password)
+    container = Container(name_page.capitalize(), address, user,password)
     storage_service = StorageService(ctx.obj['pages_table'])
     storage_service.create_container(container)
     click.echo('Container created...')
@@ -108,7 +108,7 @@ def list(ctx, current):
 def search(ctx, name_page):
     """Search container for name page"""
     storage_service = StorageService(ctx.obj['pages_table'])
-    containers = storage_service.search(name_page)
+    containers = storage_service.search(name_page.capitalize())
     if containers:
         click.echo(tabulate(containers, headers = 'keys', tablefmt='fancy_grid'))
     else:

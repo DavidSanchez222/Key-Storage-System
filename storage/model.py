@@ -19,6 +19,7 @@ class Container:
     def to_dict(self):
         return vars(self)
 
+
     @staticmethod
     def schema():
         return ['uid', 'name_page', 'address', 'user', 'password', 'created_at', 'updated_at', 'deleted_at']

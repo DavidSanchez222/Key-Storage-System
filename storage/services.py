@@ -4,6 +4,7 @@ from storage.model import Container
 
 class StorageService:
     
+    
     def __init__(self, table_name):
         self.table_name = table_name
 
@@ -12,6 +13,7 @@ class StorageService:
         with open(self.table_name, mode = 'a') as f:
             writer = csv.DictWriter(f, fieldnames = Container.schema())
             writer.writerow(page.to_dict())
+
 
     def list_containers(self, option):
         with open(self.table_name, mode = 'r') as f:

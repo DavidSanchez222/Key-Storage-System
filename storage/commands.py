@@ -1,4 +1,4 @@
-import click
+import click, getpass
 
 from storage.services import StorageService
 from storage.model import Container
@@ -64,7 +64,7 @@ def _soft_delete_credentials_flow(container):
 @click.pass_context
 def update(ctx, container_uid):
     """Update a container"""
-    storage_service = StorageService(ctx.obj['clients_table'])
+    storage_service = StorageService(ctx.obj['pages_table'])
     container_list = storage_service.list_containers(True)
     container = [container for container in container_list if container['uid'] == container_uid]
     if container:
@@ -77,10 +77,14 @@ def update(ctx, container_uid):
 
 def _update_credentials_flow(container):
     click.echo('Leave empty if you don\'t want to modify the value?')
-    container.name_page = click.prompt('New name', type = str, default = container.name_page)
-    container.address = click.prompt('New lastname', type = str, default = container.address)
-    container.user = click.prompt('New company', type = str, default = container.user)
-    container.password = click.prompt('New email', type = str, default = container.password)
+    container.name_page = click.prompt('New name page', type = str, default = container.name_page)
+    container.address = click.prompt('New address', type = str, default = container.address)
+    container.user = click.prompt('New user', type = str, default = container.user)
+    tmp_pass = getpass.getpass()
+    if tmp_pass == getpass.getpass('Confirm password:'):
+        container.password = tmp_pass
+    else:
+        click.echo('Your password has not been updated...')
     container.updated_at = datetime.now()
     return container
 

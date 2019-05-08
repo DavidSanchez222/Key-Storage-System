@@ -16,13 +16,12 @@ class StorageService:
     def list_containers(self, option):
         with open(self.table_name, mode = 'r') as f:
             all_read = csv.DictReader(f, fieldnames = Container.schema())
-            if option == '-a':
-                return list(all_read)
-            elif option == '-n':
-                reads = [all_read for read in all_read if read['deleted_at'] == 0]
-                return list(reads)
+            if option:
+                containers = self.list_containers(False)
+                currents_containers = [container for container in containers if container['deleted_at'] == '0']
+                return currents_containers
             else:
-                click.echo('Invalid option...')
+                return list(all_read)
                     
 
     def update_container(self, updated_container):

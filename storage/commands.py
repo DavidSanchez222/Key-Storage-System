@@ -85,12 +85,13 @@ def _update_credentials_flow(container):
 
 
 @storage.command()
-@click.argument('option', type = str, default = '-n')
+@click.option('--current/--all', default = False, help = 'Pending...')
 @click.pass_context
-def list(ctx, option):
+def list(ctx, current):
     """List the stored data"""
+    click.echo(current)
     storage_service = StorageService(ctx.obj['pages_table'])
-    container_list = storage_service.list_containers(option)
+    container_list = storage_service.list_containers(current)
     click.echo(tabulate(container_list, headers = 'keys', tablefmt='fancy_grid'))
 
 

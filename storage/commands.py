@@ -34,21 +34,22 @@ def create(ctx, name_page, address, user, password):
 
 
 @storage.command()
-@click.argument('option', type = str, default = '-s')
+@click.option('--available/--permanent', default = False, help = 'Pending...')
 @click.argument('container_uid', type = str)
-def delete(ctx, option, container_uid):
+@click.pass_context
+def delete(ctx, available, container_uid):
     """Delete a container"""
     storage_service = StorageService(ctx.obj['pages_table'])
-    container_list = storage_service.list_clients('-n')
+    container_list = storage_service.list_containers(False)
     container = [container for container in container_list if container['uid'] == container_uid]
     if click.confirm(f'Are you sure you want to delete the container with uid: {container_uid}') and container:
-        if option == '-s':
+        if available:
             container = _soft_delete_credentials_flow(Container(**container[0]))
             storage_service.update_container(container)
             click.echo('Container deleted...')
-        elif option == '-f':
-            storage_service.delete_container(container_uid)
-            click.echo('Container deleted...')
+        else:
+            storage_service.delete_container(Container(**container[0]))
+            click.echo('Container deleted permanent...')
     else:
         click.echo('Container not found...')
 
@@ -64,7 +65,7 @@ def _soft_delete_credentials_flow(container):
 def update(ctx, container_uid):
     """Update a container"""
     storage_service = StorageService(ctx.obj['clients_table'])
-    container_list = storage_service.list_clients('-n')
+    container_list = storage_service.list_containers(True)
     container = [container for container in container_list if container['uid'] == container_uid]
     if container:
         container = _update_credentials_flow(Container(**container[0]))
@@ -89,10 +90,12 @@ def _update_credentials_flow(container):
 @click.pass_context
 def list(ctx, current):
     """List the stored data"""
-    click.echo(current)
     storage_service = StorageService(ctx.obj['pages_table'])
     container_list = storage_service.list_containers(current)
-    click.echo(tabulate(container_list, headers = 'keys', tablefmt='fancy_grid'))
+    if container_list:
+        click.echo(tabulate(container_list, headers = 'keys', tablefmt='fancy_grid'))
+    else:
+        click.echo('No containers available...')
 
 
 @storage.command()

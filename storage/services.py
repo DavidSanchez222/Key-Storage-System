@@ -1,4 +1,4 @@
-import csv, os, click
+import csv, os
 
 from storage.model import Container
 
@@ -24,6 +24,20 @@ class StorageService:
                 return currents_containers
             else:
                 return list(all_read)
+    
+
+    def list_containers_without_credentials(self, option):
+            container_list = self.list_containers(False)
+            containers = []
+            for container in container_list:
+                container['user'] = '*****'
+                container['password'] = '*****'
+                containers.append(container)
+            if option:
+                currents_containers = [container for container in container_list if container['deleted_at'] == '0']
+                return currents_containers
+            else:
+                return containers
                     
 
     def update_container(self, updated_container):
@@ -48,12 +62,21 @@ class StorageService:
 
     def delete_container(self, updated_container):
         containers = self.list_containers(False)
-        updated_containers = [containers for container in containers if container['uid'] != updated_container.uid]
-
+        updated_containers = [container for container in containers if container['uid'] != updated_container.uid]
         self._save_to_disk(updated_containers)
 
     
     def search(self, name_page):
         container_list = self.list_containers(True)
         containers = [container for container in container_list if container['name_page'] == name_page]
+        return containers
+
+    def search_without_credentials(self, name_page):
+        container_list = self.list_containers(True)
+        containers = []
+        for container in container_list:
+            if container['name_page'] == name_page:
+                container['user'] = '*****'
+                container['password'] = '*****'
+            containers.append(container)
         return containers

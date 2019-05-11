@@ -37,7 +37,9 @@ def create(ctx, name_page, address, user, password):
 
 
 @storage.command()
-@click.option('--available/--permanent', default = False, help = 'Pending...')
+@click.option('--available/--permanent', default = False, help = 'With the option --available, perform a deletion '
+    +'leaving the record of when it was deleted. Contrary to the above, the --permanent option performs a definitive '
+    +'deletion without leaving a record.')
 @click.argument('container_uid', type = str)
 @click.pass_context
 def delete(ctx, available, container_uid):
@@ -111,8 +113,12 @@ def _update_credentials_flow(container):
 
 
 @storage.command()
-@click.option('--current/--all', default = False, help = 'Pending...')
-@click.option('-v/-n', default = False,help = 'Pending...')
+@click.option('--current/--all', default = False, help = 'With the option --current shows us the list of what we '
+    +'have stored. Unlike the above, the --all option shows us even the records that have not been permanently '
+    +'deleted.')
+@click.option('-v/-n', default = False,help = 'Con el comando -v podemos ver las credenciales de ingreso de los '
+    +'registros almacenados. Por el contrario con el comado -n, no podemos ver las credenciales de ingreso pero si '
+    +'que tenemos almacenado.')
 @click.pass_context
 def list(ctx, current, v):
     """List the stored data"""
@@ -147,7 +153,9 @@ def list(ctx, current, v):
 
 @storage.command()
 @click.argument('name_page', type = str)
-@click.option('-v/-n', default = False,help = 'Pending...')
+@click.option('-v/-n', default = False,help = 'Con el comando -v podemos ver las credenciales de ingreso de los '
+    +'registros almacenados. Por el contrario con el comado -n, no podemos ver las credenciales de ingreso pero si '
+    +'que tenemos almacenado.')
 @click.pass_context
 def search(ctx, v, name_page):
     """Search container for name page"""

@@ -14,10 +14,11 @@ def user():
     prompt = True,
     confirmation_prompt = True,
     hide_input = True,
-    help = 'Pendig...')
+    help = 'Teh user name.')
 @click.password_option()
 @click.pass_context
 def create(ctx, username, password):
+    """Create the user for key storage."""
     if ctx.obj['username'] == None and ctx.obj['passwd'] == None:
         user = User(username, password)
         auth_services = AuthService(ctx.obj['username'], ctx.obj['passwd'])
@@ -30,6 +31,7 @@ def create(ctx, username, password):
 @user.command()
 @click.pass_context
 def update(ctx):
+    """Update username and / or password."""
     auth_service = AuthService(ctx.obj['username'], ctx.obj['passwd'])
     username = click.prompt('Username', type = str, hide_input = True, show_default = False)
     password = click.prompt('Password', type = str, hide_input = True, show_default = False)

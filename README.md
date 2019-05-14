@@ -3,6 +3,10 @@ Currently we use passwords to access personal accounts on different websites, wh
 
 ## Requirements
 
+* [Virtualenv](https://github.com/pypa/virtualenv)
+
+## Dependencies
+
 * [Click](https://click.palletsprojects.com/en/7.x/)
 * [Tabulate](https://bitbucket.org/astanin/python-tabulate/src/master/)
 * [Python-dotenv](https://github.com/theskumar/python-dotenv)
@@ -25,7 +29,7 @@ To undo these changes to your path (and prompt), just run:
 ```
 $ deactivate
 ```
-To test the application, install your package
+To test the application, install the dependency packages
 ```
 $ /PATH/ pip install --editable .
 ```

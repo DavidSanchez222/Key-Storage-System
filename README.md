@@ -1,4 +1,4 @@
-# Personal Key Storage Sistem
+# Personal Key Storage System
 Currently we use passwords to access personal accounts on different websites, which is why we usually forget them, so I have created this personal key storage system.
 
 ## Requirements
